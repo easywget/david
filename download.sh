@@ -6,10 +6,11 @@ timedatectl set-timezone Asia/Singapore
 apt update && apt upgrade -y
 
 file_urls=(
-"http://192.168.1.200/portainer.sh"
-"http://192.168.1.200/filebrowser.sh"
-"http://192.168.1.200/minecraft_java.sh"
-"http://192.168.1.200/minecraft_bedrock.sh"
+"https://github.com/easywget/david/blob/main/download.sh"
+"https://github.com/easywget/david/blob/main/portainer.sh"
+"https://github.com/easywget/david/blob/main/filebrowser.sh"
+"https://github.com/easywget/david/blob/main/minecraft_java.sh"
+"https://github.com/easywget/david/blob/main/minecraft_bedrock.sh"
 )
 for url in "${file_urls[@]}"; do
     wget "$url"
