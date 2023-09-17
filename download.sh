@@ -1,11 +1,15 @@
 # Create the wget.sh script
 
 #!/bin/bash
+
+timedatectl set-timezone Asia/Singapore
+apt update && apt upgrade -y
+
 file_urls=(
-"http://192.168.1.200/downloads/filebrowser.sh"
-"http://192.168.1.200/downloads/portainer.sh"
-"http://192.168.1.200/downloads/minecraft_bedrock.sh"
-"http://192.168.1.200/downloads/minecraft_java.sh"
+"http://192.168.1.200/portainer.sh"
+"http://192.168.1.200/filebrowser.sh"
+"http://192.168.1.200/minecraft_java.sh"
+"http://192.168.1.200/minecraft_bedrock.sh"
 )
 for url in "${file_urls[@]}"; do
     wget "$url"
