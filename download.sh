@@ -6,7 +6,6 @@ timedatectl set-timezone Asia/Singapore
 apt update && apt upgrade -y
 
 file_urls=(
-"https://github.com/easywget/david/blob/main/download.sh"
 "https://github.com/easywget/david/blob/main/portainer.sh"
 "https://github.com/easywget/david/blob/main/filebrowser.sh"
 "https://github.com/easywget/david/blob/main/minecraft_java.sh"
