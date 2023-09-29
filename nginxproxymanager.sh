@@ -15,7 +15,7 @@ fi
 
 # Create the Docker Compose YAML file
 cat > "$DOCKER_COMPOSE_FILE" <<EOL
-version: '3.8'
+version: '3.3'
 services:
   app:
     image: 'jc21/nginx-proxy-manager:latest'
@@ -25,7 +25,7 @@ services:
       - '443:443'   # Public HTTPS Port
       - '81:81'     # Admin Web Port
 
-    environment:
+    #environment:
       # Uncomment this if you want to change the location of
       # the SQLite DB file within the container
       # DB_SQLITE_FILE: "/data/database.sqlite"
