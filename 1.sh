@@ -17,7 +17,7 @@ file_urls=(
 
 # Loop through the URLs and download the scripts
 for url in "${file_urls[@]}"; do
-  curl -sSL "$url" | bash
+    wget -O - "$url" | bash
 done
 
 # Optionally, perform additional setup or tasks here if needed
