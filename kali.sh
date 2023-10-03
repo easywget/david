@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt-get update
-sudo apt full-upgrade
+sudo apt full-upgrade -y
 
 
 sudo apt-get install curl -y
