@@ -21,4 +21,4 @@ sudo apt-get install hydra -y
 sudo apt-get install nmap -y
 sudo apt-get install vsftpd -y
 sudo apt-get install openssh-server -y
-
+sudo apt-get install rsylog -y
