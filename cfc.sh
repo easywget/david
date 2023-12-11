@@ -7,3 +7,4 @@ sudo apt-get install geany -y
 sudo apt-get install cherrytree -y
 pip install wget
 sudo msfdb init
+sudo apt-get install seclists
