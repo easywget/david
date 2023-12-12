@@ -8,3 +8,4 @@ sudo apt-get install cherrytree -y
 pip install wget
 sudo msfdb init
 sudo apt-get install seclists
+sudo apt-get install nikto 
