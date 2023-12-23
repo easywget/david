@@ -21,7 +21,7 @@ cat << 'EOF' > app.py
 # -*- coding: utf-8 -*-
 """
 Created on Sat Dec 23 10:12:47 2023
-
+version chuchu
 @author: kuany
 """
 
@@ -139,7 +139,6 @@ with col2:
         st.write(each_response)
     
     st.session_state.question_input = ''
-
 EOF
 
 #run gemini
