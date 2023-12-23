@@ -12,4 +12,4 @@ apt install python3-pip -y
 
 pip install streamlit
 pip install python-dotenv
-pip google-generativeai
+pip install google-generativeai
