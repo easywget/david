@@ -4,11 +4,11 @@
 python3 --version
 
 #install python3
-sudo apt update
-sudo apt install python3 -y
+apt update
+apt install python3 -y
 
 #install pip
-sudo apt install python3-pip -y
+apt install python3-pip -y
 
 pip install streamlit
 pip install python-dotenv
