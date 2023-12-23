@@ -15,6 +15,7 @@ pip install python-dotenv
 pip install google-generativeai
 
 #create the py file
+
 cat << 'EOF' > app.py
 
 # -*- coding: utf-8 -*-
@@ -60,6 +61,8 @@ model_option = st.selectbox('Do you need to provide image for your question?',
                             ('No', 'Yes'))
 
 input = st.text_input('Input: ', key='input')
+
+image = ''
 
 if model_option == 'Yes':
     uploaded_file = st.file_uploader('Choose an image', type=['jpg', 'jpeg', 'png'])
