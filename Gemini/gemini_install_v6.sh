@@ -96,9 +96,9 @@ gemini_service(){
 }
 
 run_systemctl(){
-	sudo systemctl daemon-reload
-	sudo systemctl enable gemini.service
-	sudo systemctl start gemini.service
+	systemctl daemon-reload
+	systemctl enable gemini.service
+	systemctl start gemini.service
 }
 
 # Base64-encoded content of app.py
