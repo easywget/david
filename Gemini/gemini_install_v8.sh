@@ -78,11 +78,9 @@ download_app(){
 }
 
 generate_app(){
-	if [ ! -f /opt/gemini/app.py ]; then
-		echo "Generating app.py locally..."
-		echo "$encoded_content" | base64 --decode > /opt/gemini/app.py	
-		echo "app.py generation completed."
-	fi
+	echo "Generating app.py locally..."
+	echo "$encoded_content" | base64 --decode > /opt/gemini/app.py	
+	echo "app.py generation completed."
 }
 
 run_app() {
