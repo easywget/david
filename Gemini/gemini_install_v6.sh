@@ -45,8 +45,8 @@ install_components(){
 }
 
 check_app_link(){
-	sudo mkdir -p /opt/gemini
-	sudo chown $USER:$USER /opt/gemini
+	mkdir -p /opt/gemini
+	chown $USER:$USER /opt/gemini
 	
 	if [ -f /opt/gemini/app.py ]; then
 		echo "app.py already exists in /opt/gemini/"
@@ -92,7 +92,7 @@ run_app() {
 
 gemini_service(){
 	echo "Generating start-up file..."
-	echo "encoded_content_65" | sudo base64 --decode > /etc/systemd/system/gemini.service	
+	echo "encoded_content_65" | base64 --decode > /etc/systemd/system/gemini.service	
 }
 
 run_systemctl(){
