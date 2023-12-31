@@ -26,8 +26,8 @@ WantedBy=multi-user.target
 EOF
 
 # Reload systemd manager configuration
-sudo systemctl daemon-reload
+systemctl daemon-reload
 
 # Enable and start the service
-sudo systemctl enable gemini-streamlit.service
-sudo systemctl start gemini-streamlit.service
+systemctl enable gemini-streamlit.service
+systemctl start gemini-streamlit.service
