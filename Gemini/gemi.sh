@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Variables
+path="/opt/gemini/"
 location="/opt/gemini/app.py"
 user_to_run="root"  # replace with your actual username for the service
 service_name="gemini"
@@ -36,6 +37,7 @@ done
 
 # Check if app.py is at the specified location
 if [ ! -f "$location" ]; then
+    mkdir -p $path
     echo "app.py not found at $location. Generating now..."
     echo "$encoded_content" | base64 --decode > "$location"
     chown "$user_to_run":"$user_to_run" "$location"
