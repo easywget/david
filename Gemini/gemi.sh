@@ -2,7 +2,7 @@
 
 # Variables
 location="/opt/gemini/app.py"
-user_to_run="non_root_user"  # replace with your actual username for the service
+user_to_run="root"  # replace with your actual username for the service
 service_name="gemini"
 encoded_content="..."  # Base64 encoded content of app.py
 
