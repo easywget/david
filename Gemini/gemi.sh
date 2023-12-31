@@ -57,7 +57,7 @@ Type=simple
 User=$user_to_run
 ExecStart=/usr/bin/streamlit run $location
 Restart=always
-WorkingDirectory=$(dirname $location)
+WorkingDirectory=$path
 
 [Install]
 WantedBy=multi-user.target
