@@ -9,7 +9,7 @@ app_script="/opt/gemini/app.py"
 [ "$EUID" -ne 0 ]; then exit 1
 
 # Create the systemd service unit file
-cat <<EOF | sudo tee "$service_unit_file" > /dev/null
+cat <<EOF | tee "$service_unit_file" > /dev/null
 [Unit]
 Description=Streamlit Gemini Application
 After=network.target
