@@ -39,7 +39,7 @@ done
 if [ ! -f "$location" ]; then
     mkdir -p $path
     echo "app.py not found at $location. Generating now..."
-    echo "$encoded_content" | base64 --decode > "$location"
+    echo "$encoded_content" | base64 --decode > "$path"
     chown "$user_to_run":"$user_to_run" "$location"
 else
     echo "app.py is already at $location."
