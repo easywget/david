@@ -6,6 +6,8 @@ current_username="$(whoami)"
 streamlit_command="/usr/local/bin/streamlit"
 app_script="/opt/gemini/app.py"
 
+[ "$EUID" -ne 0 ]; then exit 1
+
 # Create the systemd service unit file
 cat <<EOF | sudo tee "$service_unit_file" > /dev/null
 [Unit]
