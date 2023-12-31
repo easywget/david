@@ -75,9 +75,7 @@ download_app(){
 			if wget -O /opt/gemini/app.py "$url"; then
 				echo "Download successful with wget."
 			else
-				echo "Download failed with both curl and wget."
-				echo "will try" 
-				generate_app
+				echo "Download failed with both curl and wget." 				
 			fi
 		fi
 	else
@@ -182,5 +180,6 @@ check_python
 check_pip
 install_components
 check_app_link
+generate_app
 run_app
 
