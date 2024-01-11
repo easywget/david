@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#install docker, then portainer, file.
 # Update and upgrade the system
 apt-get install curl -y
 apt update && apt upgrade -y
