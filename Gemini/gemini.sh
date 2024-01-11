@@ -10,3 +10,4 @@ pip install python-dotenv
 pip install google-generativeai
 
 wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/app.py
+wget -O - https://raw.githubusercontent.com/easywget/david/main/Gemini/gemini.service | bash
