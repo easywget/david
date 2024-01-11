@@ -27,6 +27,3 @@ EOF
 # Reload systemd, enable and start the service
 systemctl daemon-reload
 systemctl enable "$service_name"
-systemctl start "$service_name" || echo "Failed to start $service_name service"
-
-echo "$service_name service setup completed."
