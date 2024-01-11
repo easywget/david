@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Check if running as root
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+# Variables
+path="/opt/gemini/"
+location="/opt/gemini/app.py"
+user_to_run="geminiuser"  # replace with a dedicated non-root username
+service_name="gemini"
+service_path="/etc/systemd/system/${service_name}.service"
+
+# Create systemd service file
+cat > "$service_path" << EOF
+[Unit]
+Description=Streamlit Application
+After=network.target
+
+[Service]
+Type=simple
+User=$user_to_run
+ExecStart=$path/venv/bin/streamlit run $location
+Restart=always
+WorkingDirectory=$path
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd, enable and start the service
+systemctl daemon-reload
+systemctl enable "$service_name"
+systemctl start "$service_name" || echo "Failed to start $service_name service"
+
+echo "$service_name service setup completed."
