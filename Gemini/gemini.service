@@ -16,9 +16,9 @@ After=network.target
 [Service]
 Type=simple
 User=$user_to_run
-ExecStart=$path/venv/bin/streamlit run $location
+ExecStart=/opt/gemini/venv/bin/streamlit run /opt/gemini/app.py
 Restart=always
-WorkingDirectory=$path
+WorkingDirectory=/opt/gemini/
 
 [Install]
 WantedBy=multi-user.target
