@@ -2,6 +2,7 @@
 #wrote in mind for debain
 #when installing adguard
 apt update && apt upgrade -y
+apt-get install curl -y
 
 wget --no-verbose -O - https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -v
 
