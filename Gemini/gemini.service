@@ -16,9 +16,11 @@ After=network.target
 [Service]
 Type=simple
 User=$user_to_run
+# Set PATH to include the virtual environment's bin directory
+Environment="PATH=/opt/gemini/venv/bin:$PATH"
 ExecStart=/opt/gemini/venv/bin/streamlit run /opt/gemini/app.py
-Restart=always
 WorkingDirectory=/opt/gemini/
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
@@ -26,4 +28,4 @@ EOF
 
 # Reload systemd, enable and start the service
 systemctl daemon-reload
-systemctl enable "$service_name"
+systemctl enable gemini.service
