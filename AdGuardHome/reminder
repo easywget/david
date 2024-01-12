@@ -12,6 +12,6 @@ wget --no-verbose -O - https://raw.githubusercontent.com/AdguardTeam/AdGuardHome
 #install unbound
 apt install unbound -y
 curl https://raw.githubusercontent.com/easywget/david/main/AdGuardHome/config.conf -o /etc/unbound/unbound.conf.d/config.conf
-#then
-#add 127.0.0.1:5335 at the upsteam dns servers
+reboot
+#then add 127.0.0.1:5335 at the upsteam dns servers
 #choose Parallel requests
