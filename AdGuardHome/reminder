@@ -3,7 +3,7 @@
 #when installing adguard
 apt update && apt upgrade -y
 apt-get install curl -y
-
+dpkg-reconfigure tzdata
 wget --no-verbose -O - https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -v
 
 #first time setup go to #ip:3000
