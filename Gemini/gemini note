@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#update and upgrade
+apt-get update && sudo apt-get upgrade -y
+#install python
+apt-get install python3 python3-pip
+
+#create the env.
+python3 -m venv streamlit-env
+
+#enter the env and install the requirements in the env
+source streamlit-env/bin/activate
+#install requirements 
+pip install streamlit
+pip install python-dotenv
+pip install google-generativeai
+
+#download app.py
+wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py
+#create your key
+nano .env
+#run streamlit
+streamlit run app.py
