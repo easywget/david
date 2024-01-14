@@ -37,3 +37,9 @@ ExecStart=/root/streamlit-env/bin/streamlit run app.py
 [Install]
 WantedBy=multi-user.target
 
+#after saving the streamlit.service, run the following
+sudo systemctl daemon-reload
+sudo systemctl start streamlit.service
+sudo systemctl enable streamlit.service
+
+
