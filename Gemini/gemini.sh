@@ -13,3 +13,6 @@ wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt
 wget https://raw.githubusercontent.com/easywget/david/main/Gemini/start_app.sh -O /opt/gemini/app.py
 chmod +x /opt/gemini/start_app.sh
 wget -O - https://raw.githubusercontent.com/easywget/david/main/Gemini/gemini.service | bash
+
+source /opt/gemini/venv/bin/activate
+streamlit run /opt/gemini/app.py
