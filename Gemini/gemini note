@@ -23,6 +23,8 @@ streamlit run app.py
 #create streamlit.service at /etc/systemd/system/
 nano /etc/systemd/system/streamlit.service
 
+
+#content of streamlit.service
 [Unit]
 Description=Streamlit Service
 After=network.target
