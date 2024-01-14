@@ -19,3 +19,19 @@ wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py
 #nano .env
 #run streamlit
 streamlit run app.py
+
+#create streamlit.service at /etc/systemd/system/
+nano /etc/systemd/system/streamlit.service
+
+[Unit]
+Description=Streamlit Service
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=/root/streamlit-env/bin/streamlit run app.py
+
+[Install]
+WantedBy=multi-user.target
+
