@@ -16,6 +16,6 @@ pip install streamlit python-dotenv google-generativeai
 #download app.py
 wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py
 #create your key
-nano .env
+#nano .env
 #run streamlit
 streamlit run app.py
