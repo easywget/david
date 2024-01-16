@@ -1,4 +1,4 @@
-```yaml
+yaml
 version: '3'
 services:
   portainer:
@@ -22,4 +22,3 @@ services:
     environment:
       - TZ=Asia/Singapore
     restart: unless-stopped
-```
