@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Tools to check and potentially install
-tools=("nmap" "hydra" "seclists" "curl" "hping3")  #sudo apt install uuid-runtime dig, ntpq, 
+tools=("nmap" "ntp" "hydra" "seclists" "curl" "hping3")  #sudo apt install uuid-runtime dig, ntpq, 
 
 
 # Log files
