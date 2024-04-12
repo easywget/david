@@ -23,36 +23,32 @@ install_tools() {
 
         # Special handling for seclists because it's not available as a package
         if [ "$tool" == "seclists" ]; then
-            echo "$tool is not installed or update is needed. Checking directory..."
             if [ -d "/opt/SecLists" ]; then
-                echo "Directory /opt/SecLists already exists. Removing..."
-                rm -rf /opt/SecLists
-                if [ $? -ne 0 ]; then
-                    echo "Failed to remove existing directory. Exiting."
+                echo "seclists directory /opt/SecLists already exists. Skipping installation."
+                continue  # Skip to the next tool in the loop
+            else
+                echo "Cloning seclists from GitHub..."
+                git clone https://github.com/danielmiessler/SecLists.git /opt/SecLists
+                if [ $? -eq 0 ]; then
+                    echo "seclists cloned successfully to /opt/SecLists."
+                else
+                    echo "Failed to clone seclists. Exiting."
                     exit 1
                 fi
             fi
-            echo "Cloning seclists from GitHub..."
-            git clone https://github.com/danielmiessler/SecLists.git /opt/SecLists
+        else
+            echo "$tool is not installed. Installing..."
+            apt-get install "$tool" -y > /dev/null
             if [ $? -eq 0 ]; then
-                echo "seclists cloned successfully to /opt/SecLists."
+                echo "$tool installed successfully."
             else
-                echo "Failed to clone seclists. Exiting."
+                echo "Failed to install $tool. Exiting."
                 exit 1
             fi
-            continue
-        fi
-
-        echo "$tool is not installed. Installing..."
-        apt-get install "$tool" -y > /dev/null
-        if [ $? -eq 0 ]; then
-            echo "$tool installed successfully."
-        else
-            echo "Failed to install $tool. Exiting."
-            exit 1
         fi
     done
 }
+
 
 
 
