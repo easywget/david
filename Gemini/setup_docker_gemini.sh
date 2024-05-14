@@ -4,6 +4,21 @@
 DOCKER_IMAGE_NAME="gemini-app"
 APP_DIR="/opt/gemini"
 
+# Update and upgrade the system
+apt-get update && apt-get upgrade -y
+
+# Install Docker
+echo "Installing Docker..."
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+apt-get update
+apt-get install -y docker-ce
+
+# Start Docker service
+systemctl start docker
+systemctl enable docker
+
 # Create application directory
 mkdir -p $APP_DIR
 cd $APP_DIR
