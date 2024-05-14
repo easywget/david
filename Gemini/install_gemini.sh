@@ -2,11 +2,11 @@
 
 # Update and upgrade the system
 echo "Updating and upgrading the system..."
-sudo apt-get update && sudo apt-get upgrade -y
+apt-get update && apt-get upgrade -y
 
 # Install required packages
 echo "Installing required packages..."
-sudo apt-get install -y python3 python3-venv python3-pip curl
+apt-get install -y python3 python3-venv python3-pip curl
 
 # Create and activate a virtual environment
 echo "Setting up virtual environment..."
@@ -151,7 +151,7 @@ EOF
 
 # Create systemd service file
 echo "Creating systemd service file..."
-sudo bash -c 'cat <<EOF > /etc/systemd/system/gemini.service
+cat <<EOF > /etc/systemd/system/gemini.service
 [Unit]
 Description=Streamlit Gemini Application
 After=network.target
@@ -166,20 +166,20 @@ Environment="GOOGLE_API_KEY=$google_api_key"
 
 [Install]
 WantedBy=multi-user.target
-EOF'
+EOF
 
 # Reload systemd to apply the new service file
 echo "Reloading systemd..."
-sudo systemctl daemon-reload
+systemctl daemon-reload
 
 # Enable the service to start on boot
 echo "Enabling gemini service to start on boot..."
-sudo systemctl enable gemini.service
+systemctl enable gemini.service
 
 # Start the gemini service
 echo "Starting gemini service..."
-sudo systemctl start gemini.service
+systemctl start gemini.service
 
 # Check the status of the service
 echo "Checking gemini service status..."
-sudo systemctl status gemini.service
+systemctl status gemini.service
