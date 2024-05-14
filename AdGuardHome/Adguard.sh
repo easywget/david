@@ -13,5 +13,8 @@ apt install unbound -y
 # Download Unbound configuration and save it as config.conf
 curl https://raw.githubusercontent.com/easywget/david/main/AdGuardHome/config.conf -o /etc/unbound/unbound.conf.d/config.conf
 
+# Restart the Unbound service to apply the new configuration
+systemctl restart unbound
+
 # Reboot the system
 reboot
