@@ -6,16 +6,28 @@ apt-get update && apt-get upgrade -y
 
 # Install required packages
 echo "Installing required packages..."
-apt-get install -y python3 python3-venv python3-pip curl
+apt-get install -y wget build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl
 
-# Create and activate a virtual environment
+# Download and extract Python 3.4.10 source code
+echo "Installing Python 3.4.10..."
+cd /usr/src
+wget https://www.python.org/ftp/python/3.4.10/Python-3.4.10.tgz
+tar xzf Python-3.4.10.tgz
+
+# Compile and install Python 3.4.10
+cd Python-3.4.10
+./configure --enable-optimizations
+make altinstall
+
+# Create and activate a virtual environment using Python 3.4
 echo "Setting up virtual environment..."
-python3 -m venv venv
+/usr/local/bin/python3.4 -m ensurepip
+/usr/local/bin/python3.4 -m venv venv
 source venv/bin/activate
 
 # Install Python dependencies
 echo "Installing Python dependencies..."
-pip install streamlit python-dotenv google-generative-ai pillow
+pip install streamlit python-dotenv pillow google-generative-ai
 
 # Create .env file for environment variables
 echo "Creating .env file..."
@@ -23,9 +35,9 @@ cat <<EOF > .env
 GOOGLE_API_KEY=your_google_api_key_here
 EOF
 
-## Prompt user to enter their Google API key
-#read -p "Enter your Google API key: " google_api_key
-#sed -i "s/your_google_api_key_here/$google_api_key/" .env
+# Prompt user to enter their Google API key
+read -p "Enter your Google API key: " google_api_key
+sed -i "s/your_google_api_key_here/$google_api_key/" .env
 
 # Download the app.py script (or copy from a local source)
 echo "Downloading app.py script..."
