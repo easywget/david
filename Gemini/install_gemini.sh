@@ -16,21 +16,21 @@ sudo apt install python3.11-venv -y
 # Create a user for running the service
 sudo useradd -m -s /bin/bash geminiuser
 
+# Create the necessary directories
+sudo mkdir -p /opt/gemini
+sudo chown -R geminiuser:geminiuser /opt/gemini
+
 # Create a virtual environment
-python3 -m venv /opt/gemini/venv
+sudo -u geminiuser python3 -m venv /opt/gemini/venv
 
-# Activate the virtual environment
+# Activate the virtual environment and install necessary Python packages
+sudo -u geminiuser /bin/bash <<EOF
 source /opt/gemini/venv/bin/activate
-
-# Install necessary Python packages
 pip install streamlit python-dotenv google-generativeai streamlit-visitor
-
+EOF
 
 # Download the application files
-wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/app.py
-
-# Ensure the geminiuser owns the /opt/gemini directory
-sudo chown -R geminiuser:geminiuser /opt/gemini
+sudo -u geminiuser wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/app.py
 
 # Create the systemd service file
 cat <<EOF | sudo tee /etc/systemd/system/gemini.service
