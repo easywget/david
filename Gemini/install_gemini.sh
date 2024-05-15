@@ -23,7 +23,8 @@ python3 -m venv /opt/gemini/venv
 source /opt/gemini/venv/bin/activate
 
 # Install necessary Python packages
-pip install streamlit python-dotenv google-generativeai
+pip install streamlit python-dotenv google-generativeai streamlit-visitor
+
 
 # Download the application files
 wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/app.py
