@@ -33,7 +33,7 @@ su - geminiuser -c "python3 -m venv /opt/gemini/venv"
 # Activate the virtual environment and install necessary Python packages
 su - geminiuser -c "
 source /opt/gemini/venv/bin/activate
-pip install streamlit python-dotenv google-generativeai streamlit-visitor
+pip install streamlit python-dotenv google-generativeai
 "
 
 # Verify the installation
@@ -55,7 +55,6 @@ import streamlit as st
 import os
 import google.generativeai as genai
 from PIL import Image
-from streamlit_visitor import VisitorInfo
 
 # Ensure the GOOGLE_API_KEY is set
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -85,10 +84,6 @@ def get_gemini_response(model_option, question=None, image_input=None):
 # Initialize Streamlit app
 st.set_page_config(page_title='Gemini Project', layout='wide')
 st.header('Gemini Pro / Gemini Pro Vision')
-
-# Get visitor information
-visitor = VisitorInfo()
-st.write(f"Your IP address is: {visitor.ip}")
 
 col1, col2 = st.columns(2)
 
