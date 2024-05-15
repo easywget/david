@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install sudo (if not already installed)
+# Install sudo if not already installed
 apt-get install sudo -y
 
 # Set the timezone to Singapore
@@ -23,9 +23,7 @@ python3 -m venv /opt/gemini/venv
 source /opt/gemini/venv/bin/activate
 
 # Install necessary Python packages
-pip install streamlit
-pip install python-dotenv
-pip install google-generativeai
+pip install streamlit python-dotenv google-generativeai
 
 # Download the application files
 wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/app.py
