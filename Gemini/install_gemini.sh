@@ -1,5 +1,27 @@
 #!/bin/bash
 
+# Set the timezone to Singapore
+sudo timedatectl set-timezone Asia/Singapore
+
+# Update package lists
+apt-get update
+
+# Install Python 3 and pip
+apt install python3-pip -y
+apt install python3.11-venv -y
+
+# Create a virtual environment
+python3 -m venv /opt/gemini/venv
+
+# Activate the virtual environment
+source /opt/gemini/venv/bin/activate
+
+# Install necessary Python packages
+pip install streamlit
+pip install python-dotenv
+pip install google-g
+
+
 # Update package lists
 apt-get update
 
