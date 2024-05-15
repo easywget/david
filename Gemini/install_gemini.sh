@@ -30,7 +30,7 @@ pip install streamlit python-dotenv google-generativeai streamlit-visitor
 EOF
 
 # Download the application files
-sudo -u geminiuser wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/app.py
+sudo -u geminiuser wget https://raw.githubusercontent.com/easywget/david/main/Gemini/app.py -O /opt/gemini/gemini_app.py
 
 # Create the systemd service file
 cat <<EOF | sudo tee /etc/systemd/system/gemini.service
@@ -42,7 +42,7 @@ After=network.target
 Type=simple
 User=geminiuser
 Environment="PATH=/opt/gemini/venv/bin:/usr/bin"
-ExecStart=/opt/gemini/venv/bin/streamlit run /opt/gemini/app.py
+ExecStart=/opt/gemini/venv/bin/streamlit run /opt/gemini/gemini_app.py
 WorkingDirectory=/opt/gemini/
 Restart=always
 RestartSec=10
