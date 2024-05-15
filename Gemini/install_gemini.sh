@@ -18,7 +18,6 @@ mkdir -p /opt/gemini
 chown -R geminiuser:geminiuser /opt/gemini
 
 # Prompt for environment variables
-echo
 read -p "Enter your GOOGLE_API_KEY: " google_api_key
 
 # Create the .env file
@@ -56,6 +55,16 @@ import streamlit as st
 import os
 import google.generativeai as genai
 from PIL import Image
+import requests
+
+# Function to get the user's IP address
+def get_ip():
+    try:
+        response = requests.get('https://api.ipify.org?format=json')
+        ip = response.json()['ip']
+        return ip
+    except requests.RequestException:
+        return 'IP address not available'
 
 # Ensure the GOOGLE_API_KEY is set
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -85,6 +94,10 @@ def get_gemini_response(model_option, question=None, image_input=None):
 # Initialize Streamlit app
 st.set_page_config(page_title='Gemini Project', layout='wide')
 st.header('Gemini Pro / Gemini Pro Vision')
+
+# Display the user's IP address
+user_ip = get_ip()
+st.write(f"Your IP address is: {user_ip}")
 
 col1, col2 = st.columns(2)
 
