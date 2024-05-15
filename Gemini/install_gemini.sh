@@ -18,6 +18,7 @@ mkdir -p /opt/gemini
 chown -R geminiuser:geminiuser /opt/gemini
 
 # Prompt for environment variables
+echo
 read -p "Enter your GOOGLE_API_KEY: " google_api_key
 
 # Create the .env file
@@ -33,7 +34,7 @@ su - geminiuser -c "python3 -m venv /opt/gemini/venv"
 # Activate the virtual environment and install necessary Python packages
 su - geminiuser -c "
 source /opt/gemini/venv/bin/activate
-pip install streamlit python-dotenv google-generativeai
+pip install streamlit python-dotenv google-generativeai requests
 "
 
 # Verify the installation
