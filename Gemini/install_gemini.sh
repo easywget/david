@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the timezone to Singapore
-sudo timedatectl set-timezone Asia/Singapore
+timedatectl set-timezone Asia/Singapore
 
 # Update package lists
 apt update && apt upgrade -y
