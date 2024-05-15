@@ -4,7 +4,7 @@
 sudo timedatectl set-timezone Asia/Singapore
 
 # Update package lists
-apt-get update
+apt update && apt upgrade -y
 
 # Install Python 3 and pip
 apt install python3-pip -y
