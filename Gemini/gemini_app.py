@@ -43,20 +43,16 @@ def get_gemini_response(model_option, question=None, image_input=None):
 
 # JavaScript to get the client IP address
 ip_script = """
-<script>
 async function getUserIP() {
   const response = await fetch('https://api64.ipify.org?format=json');
   const data = await response.json();
   return data.ip;
 }
-getUserIP().then(ip => {
-  Streamlit.setComponentValue(ip);
-});
-</script>
+getUserIP();
 """
 
 # Embed the JavaScript in the Streamlit app
-client_ip = streamlit_js_eval(ip_script)
+client_ip = streamlit_js_eval(js_code=ip_script)
 
 # Initialize Streamlit app
 st.header('Gemini Pro / Gemini Pro Vision')
