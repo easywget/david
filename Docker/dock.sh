@@ -1,4 +1,5 @@
 #!/bin/bash
+apt update && apt upgrade -y
 apt install ca-certificates curl gnupg lsb-release -y
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
