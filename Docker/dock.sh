@@ -1,12 +1,28 @@
 #!/bin/bash
-apt update && apt upgrade -y
-apt install ca-certificates curl gnupg lsb-release -y
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Install prerequisites
 apt update
-apt install docker-ce docker-ce-cli containerd.io docker-compose -y
+apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
+
+# Ensure the required directories and files are created
+mkdir -p /etc/apt/keyrings
+
+# Download and install the Docker GPG key
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# Add Docker repository
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Update package information
+apt update
+
+# Install Docker packages
+apt install -y docker-ce docker-ce-cli containerd.io docker-compose
+
+# Pull the latest Portainer image
 docker pull portainer/portainer-ce:latest
+
+# Run Portainer container
 docker run -d \
   -p 8000:8000 -p 9443:9443 \
   --name portainer \
@@ -18,6 +34,7 @@ docker run -d \
   -v /etc/timezone:/etc/timezone:ro \
   portainer/portainer-ce:latest
 
+# Run FileBrowser container
 docker run -d \
   --name filebrowser \
   --restart unless-stopped \
