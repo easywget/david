@@ -15,6 +15,10 @@ else
     echo "The timezone is already set to Asia/Singapore."
 fi
 
+# Verify the host time after setting timezone
+echo "Host time after setting timezone:"
+date
+
 # Update package information and install prerequisites
 apt update
 apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
@@ -53,23 +57,6 @@ docker run -d \
   -v /etc/timezone:/etc/timezone:ro \
   portainer/portainer-ce:latest
 
-# Pull the Minecraft server image
-docker pull itzg/minecraft-server
-
-# Run the Minecraft server container with time synchronization, logging configurations, and interactive options
-docker run -it \
-  --name minecraft-java \
-  --restart=always \
-  -e EULA=TRUE \
-  -e MEMORY=8G \
-  -p 25565:25565 \
-  -v /etc/localtime:/etc/localtime:ro \
-  -v /etc/timezone:/etc/timezone:ro \
-  --log-driver=json-file \
-  --log-opt max-size=10m \
-  --log-opt max-file=3 \
-  itzg/minecraft-server
-
 # Pull the FileBrowser image
 docker pull filebrowser/filebrowser
 
@@ -86,3 +73,20 @@ docker run -d \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
   filebrowser/filebrowser
+
+# Pull the Minecraft server image
+docker pull itzg/minecraft-server
+
+# Run the Minecraft server container with time synchronization, logging configurations, and interactive options
+docker run -it \
+  --name minecraft-java \
+  --restart=always \
+  -e EULA=TRUE \
+  -e MEMORY=8G \
+  -p 25565:25565 \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /etc/timezone:/etc/timezone:ro \
+  --log-driver=json-file \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
+  itzg/minecraft-server
