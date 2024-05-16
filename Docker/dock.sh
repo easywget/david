@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Check if the current timezone is already set to Singapore
+if [ "$current_timezone" != "Asia/Singapore" ]; then
+    # Set the timezone to Singapore
+    echo "Setting timezone to Asia/Singapore..."
+    timedatectl set-timezone Asia/Singapore
+else
+    echo "The timezone is already set to Asia/Singapore."
+fi
+
 apt update && apt upgrade -y
 # Install prerequisites
 apt update
