@@ -52,7 +52,7 @@ getUserIP();
 """
 
 # Embed the JavaScript in the Streamlit app
-client_ip = streamlit_js_eval(js_code=ip_script)
+client_ip = streamlit_js_eval(ip_script, key="ip_script")
 
 # Initialize Streamlit app
 st.header('Gemini Pro / Gemini Pro Vision')
@@ -111,17 +111,3 @@ with col1:
         st.session_state.response_log.append(response)
 
 with col2:
-    st.subheader('Past Questions and Responses:')
-    if st.button('Clear past responses'):
-        st.session_state.question_log, st.session_state.image_log, st.session_state.response_log = [], [], []
-
-    for index, (each_question, each_image, each_response) in enumerate(zip(st.session_state.question_log, st.session_state.image_log, st.session_state.response_log)):
-        st.subheader(f'Question {index + 1}:')
-        st.write(each_question)
-
-        if each_image:
-            st.subheader(f'Image {index + 1}:')
-            st.image(each_image)
-
-        st.subheader(f'Response {index + 1}:')
-        st.write(each_response)
