@@ -5,14 +5,16 @@ Created on Sat Dec 23 10:12:47 2023
 Author: kuany
 """
 
-from dotenv import load_dotenv
-load_dotenv()  # Load all the environmental variables
-
 import streamlit as st
 import os
 import google.generativeai as genai
 from PIL import Image
-from streamlit_visitor import VisitorInfo
+from dotenv import load_dotenv
+from streamlit_js_eval import streamlit_js_eval
+
+st.set_page_config(page_title='Gemini Project', layout='wide')
+
+load_dotenv()  # Load all the environmental variables
 
 # Ensure the GOOGLE_API_KEY is set
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -39,13 +41,28 @@ def get_gemini_response(model_option, question=None, image_input=None):
         response = model.generate_content(question)
     return response.text
 
+# JavaScript to get the client IP address
+ip_script = """
+<script>
+async function getUserIP() {
+  const response = await fetch('https://api64.ipify.org?format=json');
+  const data = await response.json();
+  return data.ip;
+}
+getUserIP().then(ip => {
+  Streamlit.setComponentValue(ip);
+});
+</script>
+"""
+
+# Embed the JavaScript in the Streamlit app
+client_ip = streamlit_js_eval(ip_script)
+
 # Initialize Streamlit app
-st.set_page_config(page_title='Gemini Project', layout='wide')
 st.header('Gemini Pro / Gemini Pro Vision')
 
-# Get visitor information
-visitor = VisitorInfo()
-st.write(f"Your IP address is: {visitor.ip}")
+# Display the client's IP address
+st.write(f"Your IP address is: {client_ip}")
 
 col1, col2 = st.columns(2)
 
