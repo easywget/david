@@ -1,34 +1,50 @@
 #!/bin/bash
 
+# Stop the gemini service if it is running
+systemctl stop gemini.service
+
+# Function to check if a package is installed
+is_installed() {
+    dpkg -s "$1" &> /dev/null
+}
+
 # Set the timezone to Singapore
 timedatectl set-timezone Asia/Singapore
 
 # Update package lists
 apt-get update
 
-# Install Python 3 and pip
-apt install python3-pip -y
-apt install python3.11-venv -y
+# Install Python 3 and pip if not already installed
+if ! is_installed python3-pip; then
+    apt install python3-pip -y
+fi
 
-# Create a user for running the service (if needed)
-useradd -m -s /bin/bash geminiuser
+if ! is_installed python3.11-venv; then
+    apt install python3.11-venv -y
+fi
+
+# Create a user for running the service if it doesn't already exist
+if ! id -u geminiuser > /dev/null 2>&1; then
+    useradd -m -s /bin/bash geminiuser
+fi
 
 # Create the necessary directories
 mkdir -p /opt/gemini
 chown -R geminiuser:geminiuser /opt/gemini
 
-# Prompt for environment variables
-read -p "Enter your GOOGLE_API_KEY: " google_api_key
+# Check if the .env file already exists and contains the API key
+if [ -f /opt/gemini/.env ] && grep -q "GOOGLE_API_KEY=" /opt/gemini/.env; then
+    echo "GOOGLE_API_KEY is already set in the .env file."
+else
+    read -p "Enter your GOOGLE_API_KEY: " google_api_key
+    echo "GOOGLE_API_KEY=${google_api_key}" > /opt/gemini/.env
+    chown geminiuser:geminiuser /opt/gemini/.env
+fi
 
-# Create the .env file
-cat <<EOF > /opt/gemini/.env
-GOOGLE_API_KEY=${google_api_key}
-EOF
-
-chown geminiuser:geminiuser /opt/gemini/.env
-
-# Create a virtual environment
-su - geminiuser -c "python3 -m venv /opt/gemini/venv"
+# Create a virtual environment if it doesn't already exist
+if [ ! -d /opt/gemini/venv ]; then
+    su - geminiuser -c "python3 -m venv /opt/gemini/venv"
+fi
 
 # Activate the virtual environment and install necessary Python packages
 su - geminiuser -c "
@@ -39,8 +55,22 @@ pip install streamlit python-dotenv google-generativeai requests
 # Verify the installation
 su - geminiuser -c "/opt/gemini/venv/bin/pip list"
 
-# Create the Streamlit application file
-cat <<EOF > /opt/gemini/gemini_app.py
+# Check if the Streamlit application file exists
+if [ -f /opt/gemini/gemini_app.py ]; then
+    read -p "The file gemini_app.py already exists. Do you want to overwrite it? (yes/no): " overwrite
+    if [ "$overwrite" != "yes" ]; then
+        echo "Skipping creation of gemini_app.py"
+        create_app="false"
+    else
+        create_app="true"
+    fi
+else
+    create_app="true"
+fi
+
+# Create the Streamlit application file if it doesn't exist or user chose to overwrite
+if [ "$create_app" == "true" ]; then
+    cat <<EOF > /opt/gemini/gemini_app.py
 # -*- coding: utf-8 -*-
 """
 Created on Sat Dec 23 10:12:47 2023
@@ -55,16 +85,6 @@ import streamlit as st
 import os
 import google.generativeai as genai
 from PIL import Image
-import requests
-
-# Function to get the user's IP address
-def get_ip():
-    try:
-        response = requests.get('https://api.ipify.org?format=json')
-        ip = response.json()['ip']
-        return ip
-    except requests.RequestException:
-        return 'IP address not available'
 
 # Ensure the GOOGLE_API_KEY is set
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -94,10 +114,6 @@ def get_gemini_response(model_option, question=None, image_input=None):
 # Initialize Streamlit app
 st.set_page_config(page_title='Gemini Project', layout='wide')
 st.header('Gemini Pro / Gemini Pro Vision')
-
-# Display the user's IP address
-user_ip = get_ip()
-st.write(f"Your IP address is: {user_ip}")
 
 col1, col2 = st.columns(2)
 
@@ -166,7 +182,8 @@ with col2:
         st.write(each_response)
 EOF
 
-chown geminiuser:geminiuser /opt/gemini/gemini_app.py
+    chown geminiuser:geminiuser /opt/gemini/gemini_app.py
+fi
 
 # Create the systemd service file
 cat <<EOF > /etc/systemd/system/gemini.service
