@@ -8,8 +8,20 @@ is_installed() {
     dpkg -s "$1" &> /dev/null
 }
 
-# Set the timezone to Singapore
-timedatectl set-timezone Asia/Singapore
+# Get the current timezone
+current_timezone=$(timedatectl show --property=Timezone --value)
+
+# Echo the current timezone
+echo "Current timezone: $current_timezone"
+
+# Check if the current timezone is already set to Singapore
+if [ "$current_timezone" != "Asia/Singapore" ]; then
+    # Set the timezone to Singapore
+    echo "Setting timezone to Asia/Singapore..."
+    timedatectl set-timezone Asia/Singapore
+else
+    echo "The timezone is already set to Asia/Singapore."
+fi
 
 # Update package lists
 apt-get update
@@ -49,7 +61,7 @@ fi
 # Activate the virtual environment and install necessary Python packages
 su - geminiuser -c "
 source /opt/gemini/venv/bin/activate
-pip install streamlit python-dotenv google-generativeai requests
+pip install streamlit python-dotenv google-generativeai
 "
 
 # Verify the installation
