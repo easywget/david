@@ -1,5 +1,6 @@
 #!/bin/bash
 
+apt update && apt upgrade -y
 # Install prerequisites
 apt update
 apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
