@@ -56,8 +56,8 @@ docker run -d \
 # Pull the Minecraft server image
 docker pull itzg/minecraft-server
 
-# Run the Minecraft server container with time synchronization and logging configurations
-docker run -d \
+# Run the Minecraft server container with time synchronization, logging configurations, and interactive options
+docker run -it \
   --name minecraft-java \
   --restart=always \
   -e EULA=TRUE \
@@ -69,3 +69,20 @@ docker run -d \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
   itzg/minecraft-server
+
+# Pull the FileBrowser image
+docker pull filebrowser/filebrowser
+
+# Run the FileBrowser container with time synchronization and logging configurations
+docker run -d \
+  --name filebrowser \
+  --restart unless-stopped \
+  -e TZ=Asia/Singapore \
+  -p 8080:80 \
+  -v /:/srv \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /etc/timezone:/etc/timezone:ro \
+  --log-driver=json-file \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
+  filebrowser/filebrowser
