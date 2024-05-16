@@ -4,10 +4,34 @@
 UPDATE_SCRIPT_URL="https://get.glennr.nl/unifi/update/unifi-update.sh"
 UPDATE_SCRIPT="unifi-update.sh"
 
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to install a package if it does not exist
+install_package() {
+    if ! command_exists "$1"; then
+        echo "$1 is not installed. Installing..."
+        apt-get update
+        apt-get install -y "$1"
+        if [[ $? -ne 0 ]]; then
+            echo "Failed to install $1."
+            exit 1
+        fi
+    else
+        echo "$1 is already installed."
+    fi
+}
+
+# Check and install sudo and curl
+install_package "sudo"
+install_package "curl"
+
 # Function to check for updates
 check_for_updates() {
     echo "Checking for updates..."
-    wget -q --show-progress -O $UPDATE_SCRIPT $UPDATE_SCRIPT_URL
+    curl -s -O $UPDATE_SCRIPT_URL
     if [[ $? -ne 0 ]]; then
         echo "Failed to download the update script."
         exit 1
