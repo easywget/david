@@ -26,7 +26,15 @@ update_packages() {
 
 # Function to install necessary packages
 install_packages() {
-    apt-get install -y python3-pip python3.11-venv git
+    if ! is_installed python3-pip; then
+        apt-get install -y python3-pip
+    fi
+    if ! is_installed python3.11-venv; then
+        apt-get install -y python3.11-venv
+    fi
+    if ! is_installed git; then
+        apt-get install -y git
+    fi
 }
 
 # Function to create a user for running the service if it doesn't already exist
@@ -46,21 +54,24 @@ create_directories() {
 download_files() {
     su - geminiuser -c "
     cd /opt/gemini && \
-    wget ${REPO_URL}/${SERVICE_FILE} -O /etc/systemd/system/${SERVICE_FILE} && \
-    wget ${REPO_URL}/${APP_FILE} -O /opt/gemini/${APP_FILE} && \
+    wget -N ${REPO_URL}/${SERVICE_FILE} -O /etc/systemd/system/${SERVICE_FILE} && \
+    wget -N ${REPO_URL}/${APP_FILE} -O /opt/gemini/${APP_FILE} && \
     chown -R geminiuser:geminiuser /opt/gemini
     "
 }
 
 # Function to create a virtual environment
 create_virtualenv() {
-    su - geminiuser -c "python3 -m venv /opt/gemini/venv"
+    if [ ! -d /opt/gemini/venv ]; then
+        su - geminiuser -c "python3 -m venv /opt/gemini/venv"
+    fi
 }
 
 # Function to install necessary Python packages
 install_python_packages() {
     su - geminiuser -c "
     source /opt/gemini/venv/bin/activate && \
+    pip install --upgrade pip && \
     pip install streamlit python-dotenv google-generativeai requests streamlit_js_eval
     "
 }
