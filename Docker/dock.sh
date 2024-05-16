@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Get the current timezone
+current_timezone=$(timedatectl show --property=Timezone --value)
+
+# Echo the current timezone
+echo "Current timezone: $current_timezone"
+
 # Check if the current timezone is already set to Singapore
 if [ "$current_timezone" != "Asia/Singapore" ]; then
     # Set the timezone to Singapore
