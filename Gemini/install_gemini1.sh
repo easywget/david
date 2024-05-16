@@ -1,7 +1,15 @@
 #!/bin/bash
 
-# Stop the gemini service if it is running
-systemctl stop gemini.service
+# Check if the gemini service exists
+if systemctl list-unit-files --type=service | grep -q 'gemini.service'; then
+    # Stop the gemini service if it is running
+    systemctl stop gemini.service
+    echo "Gemini service stopped."
+else
+    echo "Gemini service not found or not loaded."
+fi
+
+
 
 # Function to check if a package is installed
 is_installed() {
