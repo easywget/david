@@ -1,7 +1,7 @@
 #/bin/bash
 
-rm install_gemini.sh
+rm ipviewer.sh
 
-nano install_gemini.sh 
+nano ipviewer.sh 
 
-chmod +x install_gemini.sh
+chmod +x ipviewer.sh
