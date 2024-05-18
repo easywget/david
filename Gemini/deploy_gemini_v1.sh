@@ -79,7 +79,6 @@ with col1:
     
     image = ''
     
-    # input = st.text_input('Input: ', key='input', on_change=click_button)
     input = st.text_area('Input: ', key='input')
     
     if model_option == 'Yes':
@@ -141,7 +140,7 @@ After=network.target
 User=geminiuser
 Group=geminiuser
 WorkingDirectory=/opt/gemini
-ExecStart=/opt/gemini/venv/bin/streamlit run /opt/gemini/gemini_app.py --server.port=8501
+ExecStart=/opt/gemini/venv/bin/streamlit run /opt/gemini/gemini_app.py --server.port=8501 --server.address=0.0.0.0
 Restart=always
 
 [Install]
@@ -152,7 +151,7 @@ EOF
 NGINX_CONFIG_CONTENT=$(cat <<'EOF'
 server {
     listen 80;
-    server_name your_domain_or_ip;
+    server_name 192.168.1.150;
 
     location / {
         proxy_pass http://127.0.0.1:8501;
@@ -191,7 +190,6 @@ create_service_file() {
 create_nginx_config() {
     echo "Creating NGINX configuration file..."
     echo "$NGINX_CONFIG_CONTENT" > "$NGINX_CONFIG_PATH"
-    sed -i "s/your_domain_or_ip/$(hostname -I | awk '{print $1}')/g" "$NGINX_CONFIG_PATH"
     ln -sf "$NGINX_CONFIG_PATH" "$NGINX_ENABLED_PATH"
 }
 
