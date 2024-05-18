@@ -123,7 +123,7 @@ with col2:
             st.image(each_image)
         
         st.subheader('Response {}:'.format(index + 1))
-        st.write(each_response)
+            st.write(each_response)
     
     st.session_state.question_input = ''
 EOF
@@ -167,11 +167,14 @@ create_service_file() {
     fi
 }
 
-# Function to check if the .env file exists and prompt the user if it doesn't
+# Function to check if the .env file exists, prompt the user for the key if it doesn't, and create the .env file
 check_env_file() {
     if [ ! -f "$ENV_FILE_PATH" ]; then
-        echo ".env file not found in /opt/gemini. Please create it with the necessary environment variables."
-        exit 1
+        echo ".env file not found in /opt/gemini. Please enter your GOOGLE_API_KEY:"
+        read -r GOOGLE_API_KEY
+        echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > "$ENV_FILE_PATH"
+        chown geminiuser:geminiuser "$ENV_FILE_PATH"
+        echo ".env file created."
     else
         echo ".env file found."
     fi
