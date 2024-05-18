@@ -210,7 +210,7 @@ main() {
     create_flask_service_file
     create_streamlit_app_file
     create_streamlit_service_file
-    configure_firewall
+    #configure_firewall
     start_services
     check_services_status
     echo "Gemini services have been started/restarted successfully."
