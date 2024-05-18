@@ -5,6 +5,8 @@ SERVICE_FILE_PATH="/etc/systemd/system/gemini.service"
 ENV_FILE_PATH="/opt/gemini/.env"
 NGINX_CONFIG_PATH="/etc/nginx/sites-available/gemini"
 NGINX_ENABLED_PATH="/etc/nginx/sites-enabled/gemini"
+STREAMLIT_CONFIG_DIR="/opt/gemini/.streamlit"
+STREAMLIT_CONFIG_FILE="/opt/gemini/.streamlit/config.toml"
 
 APP_CONTENT=$(cat <<'EOF'
 # -*- coding: utf-8 -*-
@@ -15,7 +17,7 @@ Created on Sat Dec 23 10:12:47 2023
 """
 
 from dotenv import load_dotenv
-load_dotenv() ### Loading all the environmental variables
+load_dotenv()  ### Loading all the environmental variables
 
 import streamlit as st
 import os
@@ -49,7 +51,7 @@ st.header('Gemini Pro / Gemini Pro Vision')
 col1, col2 = st.columns(2)
 
 with col1:
-    model_option = st.selectbox('Do you need to provide an image for your question?', 
+    model_option = st.selectbox('Do you need to provide image for your question?', 
                                 ('No', 'Yes'))
     
     if 'model_option' not in st.session_state:
@@ -77,6 +79,7 @@ with col1:
     
     image = ''
     
+    # input = st.text_input('Input: ', key='input', on_change=click_button)
     input = st.text_area('Input: ', key='input')
     
     if model_option == 'Yes':
@@ -149,51 +152,47 @@ EOF
 NGINX_CONFIG_CONTENT=$(cat <<'EOF'
 server {
     listen 80;
-    server_name YOUR_DOMAIN_OR_IP;
+    server_name your_domain_or_ip;
 
     location / {
         proxy_pass http://127.0.0.1:8501;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 EOF
 )
 
-# Function to create the application file if it doesn't exist
+STREAMLIT_CONFIG_CONTENT=$(cat <<'EOF'
+[server]
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = false
+EOF
+)
+
+# Function to create the application file
 create_app_file() {
-    if [ ! -f "$APP_FILE_PATH" ]; then
-        echo "Creating application file..."
-        echo "$APP_CONTENT" > "$APP_FILE_PATH"
-        chown geminiuser:geminiuser "$APP_FILE_PATH"
-    else
-        echo "Application file already exists. Skipping creation."
-    fi
+    echo "Creating application file..."
+    echo "$APP_CONTENT" > "$APP_FILE_PATH"
+    chown geminiuser:geminiuser "$APP_FILE_PATH"
 }
 
-# Function to create the service file if it doesn't exist
+# Function to create the service file
 create_service_file() {
-    if [ ! -f "$SERVICE_FILE_PATH" ]; then
-        echo "Creating service file..."
-        echo "$SERVICE_CONTENT" > "$SERVICE_FILE_PATH"
-    else
-        echo "Service file already exists. Skipping creation."
-    fi
+    echo "Creating service file..."
+    echo "$SERVICE_CONTENT" > "$SERVICE_FILE_PATH"
 }
 
 # Function to create the NGINX configuration file
 create_nginx_config() {
-    if [ ! -f "$NGINX_CONFIG_PATH" ]; then
-        echo "Creating NGINX configuration file..."
-        echo "$NGINX_CONFIG_CONTENT" > "$NGINX_CONFIG_PATH"
-        read -p "Please enter your domain or IP address: " DOMAIN_OR_IP
-        sed -i "s/YOUR_DOMAIN_OR_IP/$DOMAIN_OR_IP/g" "$NGINX_CONFIG_PATH"
-        ln -s "$NGINX_CONFIG_PATH" "$NGINX_ENABLED_PATH"
-    else
-        echo "NGINX configuration file already exists. Skipping creation."
-    fi
+    echo "Creating NGINX configuration file..."
+    echo "$NGINX_CONFIG_CONTENT" > "$NGINX_CONFIG_PATH"
+    sed -i "s/your_domain_or_ip/$(hostname -I | awk '{print $1}')/g" "$NGINX_CONFIG_PATH"
+    ln -sf "$NGINX_CONFIG_PATH" "$NGINX_ENABLED_PATH"
 }
 
 # Function to check if the .env file exists, prompt the user for the key if it doesn't, and create the .env file
@@ -207,6 +206,17 @@ check_env_file() {
     else
         echo ".env file found."
     fi
+}
+
+# Function to create the Streamlit configuration file
+create_streamlit_config() {
+    echo "Creating Streamlit configuration directory..."
+    mkdir -p "$STREAMLIT_CONFIG_DIR"
+    chown geminiuser:geminiuser "$STREAMLIT_CONFIG_DIR"
+
+    echo "Creating Streamlit configuration file..."
+    echo "$STREAMLIT_CONFIG_CONTENT" > "$STREAMLIT_CONFIG_FILE"
+    chown geminiuser:geminiuser "$STREAMLIT_CONFIG_FILE"
 }
 
 # Function to reload systemd, enable, and start the service
@@ -229,9 +239,10 @@ main() {
     create_service_file
     create_nginx_config
     check_env_file
+    create_streamlit_config
     start_service
     restart_nginx
-    echo "Gemini service has been started successfully."
+    echo "Gemini service and related files have been set up successfully."
 }
 
 # Execute the main function
