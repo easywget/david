@@ -20,7 +20,7 @@ update_packages() {
 # Function to install necessary packages
 install_packages() {
     echo "Installing necessary packages..."
-    for package in python3-pip python3.11-venv nginx; do
+    for package in python3-pip python3.11-venv nginx net-tools curl; do
         if ! is_installed "$package"; then
             apt-get install -y "$package"
         fi
