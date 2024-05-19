@@ -13,7 +13,6 @@ APP_CONTENT=$(cat <<'EOF'
 """
 Created on Sat Dec 23 10:12:47 2023
 
-@author: kuany
 """
 
 from dotenv import load_dotenv
@@ -151,7 +150,7 @@ EOF
 NGINX_CONFIG_CONTENT=$(cat <<'EOF'
 server {
     listen 80;
-    server_name 192.168.1.150;
+    server_name 45.119.154.169;
 
     location / {
         proxy_pass http://127.0.0.1:8501;
