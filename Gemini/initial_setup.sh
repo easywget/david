@@ -20,11 +20,19 @@ update_packages() {
 # Function to install necessary packages
 install_packages() {
     echo "Installing necessary packages..."
-    for package in python3-pip python3.11-venv; do
+    for package in python3-pip python3.11-venv nginx net-tools curl ufw; do
         if ! is_installed "$package"; then
             apt-get install -y "$package"
         fi
     done
+}
+
+# Function to configure UFW
+configure_ufw() {
+    echo "Configuring UFW..."
+    ufw allow 80/tcp
+    ufw allow 8501/tcp
+    ufw enable
 }
 
 # Function to create a user for running the service if it doesn't already exist
@@ -70,6 +78,7 @@ main() {
     set_timezone
     update_packages
     install_packages
+    configure_ufw
     create_user
     create_directories
     create_virtualenv
