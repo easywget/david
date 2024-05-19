@@ -21,6 +21,7 @@ load_dotenv()  ### Loading all the environmental variables
 import streamlit as st
 import os
 import google.generativeai as genai
+import subprocess
 
 from PIL import Image
 
@@ -30,7 +31,7 @@ text_model = genai.GenerativeModel('gemini-pro')
 image_model = genai.GenerativeModel('gemini-pro-vision')
 
 ### Create a function to load Gemini Pro model and get responses
-def get_gemini_response(model_option, question=None, image_input=None):
+def get_gemini_response(model_option, question = None, image_input = None):
     if model_option == 'Yes':
         model = image_model
         if question != '':
@@ -42,14 +43,29 @@ def get_gemini_response(model_option, question=None, image_input=None):
         response = model.generate_content(question)
     return response.text
 
+### Function to get IP address from access.log
+def get_ip_address():
+    try:
+        result = subprocess.run(['tail', '-n', '1', '/var/log/nginx/access.log'], stdout=subprocess.PIPE)
+        log_entry = result.stdout.decode('utf-8')
+        ip_address = log_entry.split(' ')[0]
+        return ip_address
+    except Exception as e:
+        return "Unable to fetch IP address"
+
 ### Initialize our streamlit app
-st.set_page_config(page_title='Gemini Project', layout='wide')
+st.set_page_config(page_title = 'Gemini Project', layout='wide')
 
 st.header('Gemini Pro / Gemini Pro Vision')
+
+# Display user's IP address
+ip_address = get_ip_address()
+st.subheader(f'Your IP address is: {ip_address}')
 
 col1, col2 = st.columns(2)
 
 with col1:
+
     model_option = st.selectbox('Do you need to provide image for your question?', 
                                 ('No', 'Yes'))
     
